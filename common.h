@@ -8,6 +8,10 @@
 #include <variant>
 #include <vector>
 
+constexpr double UPPER_NUMBER_BOUND = 1e+200;
+constexpr double LOWER_NUMBER_BOUND = 1e-200;
+
+
 // Позиция ячейки. Индексация с нуля.
 struct Position {
     int row = 0;

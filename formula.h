@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.h"
+#include "FormulaAST.h"
 
 #include <memory>
 #include <vector>
@@ -18,7 +19,7 @@ public:
 
     virtual ~FormulaInterface() = default;
 
-    // Обратите внимание, что в метод Evaluate() ссылка на таблицу передаётся 
+    // Обратите внимание, что в метод Evaluate() ссылка на таблицу передаётся
     // в качестве аргумента.
     // Возвращает вычисленное значение формулы для переданного листа либо ошибку.
     // Если вычисление какой-то из указанных в формуле ячеек приводит к ошибке, то
@@ -34,6 +35,20 @@ public:
     // формулы. Список отсортирован по возрастанию и не содержит повторяющихся
     // ячеек.
     virtual std::vector<Position> GetReferencedCells() const = 0;
+};
+
+class Formula : public FormulaInterface {
+public:
+    explicit Formula(std::string expression);
+
+    Value Evaluate(const SheetInterface& sheet) const override;
+
+    std::string GetExpression() const override;
+    std::vector<Position> GetReferencedCells() const override;
+
+private:
+    FormulaAST ast_;
+
 };
 
 // Парсит переданное выражение и возвращает объект формулы.
